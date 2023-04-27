@@ -1,5 +1,5 @@
 class Game
-  attr_accessor :players, :board, :current_player, :status
+  attr_accessor :players, :board, :current_player, :status, :victory_count, :draw_count
 
   def initialize(player1, player2)
     @players = [] 
@@ -12,16 +12,19 @@ class Game
     show.show_board(@board.grid)
     @status = "ongoing"
     @current_player = @players[0]
+    @victory_count = {@players[0] => 0, @players[1] => 0}
+    @draw_count = 0
   end
 
   def turn
     #TO DO : méthode faisant appelle aux méthodes des autres classes (notamment à l'instance de Board). Elle affiche le plateau, demande au joueur ce qu'il joue, vérifie si un joueur a gagné, passe au joueur suivant si la partie n'est pas finie.
     
-    
     while @status == "ongoing"
       @board.play_turn(@current_player.name, @current_player.symbol)
+      print "\n"
       show = Show.new
       show.show_board(@board.grid)
+      print "\n"
       if @current_player == @players[0]
         @current_player = @players[1]
       else
@@ -35,7 +38,8 @@ class Game
       winner = @board.victory?
       game_end(winner)
     else @board.draw?
-      puts "Draw"
+      puts "Draw."
+      @draw_count += 1
     end
     
   end
@@ -52,12 +56,17 @@ class Game
     # TO DO : permet l'affichage de fin de partie quand un vainqueur est détecté ou si il y a match nul
     if winner == @players[0].symbol
       puts "#{@players[0].name} has won."
-    elsif winner == nil
-      puts "Draw."
+      @victory_count[@players[0]] += 1
     else 
       puts "#{@players[1].name} has won."
+      @victory_count[@players[1]] += 1
     end
-  end    
+  end
+
+  def score
+    puts "#{players[0].name} #{@victory_count[@players[0]]} - #{@victory_count[@players[1]]} #{@players[1].name}!"
+    puts "The game has come to a draw #{draw_count} time(s)."
+  end
 
 end
 
