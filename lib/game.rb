@@ -6,18 +6,19 @@ class Game
     player1 = Player.new(player1, "X")
     player2 = Player.new(player2, "O")
     @players << player1 << player2
-    #TO DO : créé 2 joueurs, créé un board, met le status à "on going", défini un current_player
+
     @board = Board.new
     show = Show.new
     show.show_board(@board.grid)
+
     @status = "ongoing"
     @current_player = @players[0]
+
     @victory_count = {@players[0] => 0, @players[1] => 0}
     @draw_count = 0
   end
 
   def turn
-    #TO DO : méthode faisant appelle aux méthodes des autres classes (notamment à l'instance de Board). Elle affiche le plateau, demande au joueur ce qu'il joue, vérifie si un joueur a gagné, passe au joueur suivant si la partie n'est pas finie.
     
     while @status == "ongoing"
       @board.play_turn(@current_player.name, @current_player.symbol)
@@ -45,7 +46,6 @@ class Game
   end
 
   def new_round
-    # TO DO : relance une partie en initialisant un nouveau board mais en gardant les mêmes joueurs.
     puts "New game?"
     @board = Board.new
     show = Show.new
@@ -53,7 +53,6 @@ class Game
   end
 
   def game_end(winner)
-    # TO DO : permet l'affichage de fin de partie quand un vainqueur est détecté ou si il y a match nul
     if winner == @players[0].symbol
       puts "#{@players[0].name} has won."
       @victory_count[@players[0]] += 1
