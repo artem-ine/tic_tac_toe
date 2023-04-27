@@ -30,12 +30,19 @@ class Board
     puts "#{current_player}, pick a case on the grid."
     player_choice = gets.chomp
     #2) change la BoardCase jouée en fonction de la valeur du joueur (X ou O)
+
     grid.each do |boardcase|
       if boardcase.id == player_choice
-        boardcase.value = player_symbol
+        if boardcase.value == " "
+          boardcase.value = player_symbol
+          @count_turn += 1
+        else 
+          puts "This case is already occupied. Please choose another case."
+          print "\n"
+          play_turn(current_player, player_symbol)
+        end
       end
     end
-    @count_turn += 1
   end
 
   def draw?
